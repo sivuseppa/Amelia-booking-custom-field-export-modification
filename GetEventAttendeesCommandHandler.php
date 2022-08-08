@@ -118,9 +118,9 @@ class GetEventAttendeesCommandHandler extends CommandHandler
                     foreach ($customFiled['value'] as $customFiledValue) {
                         $customFieldsValues[] =  $customFiledValue;
                     }
-                    $customFields[] = $customFiled['label'] . ': ' . implode('|', $customFieldsValues);
+                    $customFields[ $customFiled['label'] ] = implode( '|', $customFieldsValues );
                 } else {
-                    $customFields[] = $customFiled['label'] . ': ' . $customFiled['value'];
+                    $customFields[ $customFiled['label'] ] = $customFiled['value'];
                 }
             }
 
@@ -224,7 +224,9 @@ class GetEventAttendeesCommandHandler extends CommandHandler
             }
 
             if (in_array('customFields', $params['fields'], true)) {
-                $row[BackendStrings::getSettingsStrings()['custom_fields']] = implode(', ', $customFields);
+                foreach ( $customFields as $key => $field ) {
+                    $row[ $key ] = $field;
+                }
             }
 
             $rows[] = $row;
